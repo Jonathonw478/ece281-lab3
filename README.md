@@ -23,6 +23,11 @@ The workflow uses GHDL to analyze, elaborate, and run the entity specified in th
 env:
   TESTBENCH_ENTITY: myfile
 ```
+![Waveform from thunderbird_fsm_tb][(<img width="776" alt="SimulationScreenShot" src="https://github.com/Jonathonw478/ece281-lab3/assets/142036146/c53bf6db-2551-4925-a426-6cbc4d17b68c">](https://usafa0-my.sharepoint.com/:i:/g/personal/c26jonathon_watson_afacademy_af_edu/EWED7NafZL5EgeK7HYcKyzABPaFwygAplhB3porY7i58ew?e=CpX0ul)
+
 
 If successful then GHDL will quietly exit with a `0` code.
 If any of the `assert` statements fail **with** `severity error` then GHDL will cease the simulation and exit with non-zero code; this will also cause the workflow to fail.
+
+## Documentation
+No help received.
