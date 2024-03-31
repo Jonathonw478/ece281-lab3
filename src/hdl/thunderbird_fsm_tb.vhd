@@ -114,49 +114,59 @@ begin
 	begin
 	
         -- sequential timing
+        -- Check if reset works by asserting the L and R states should be 000 after reset
         w_reset <= '1';
         wait for k_clk_period*1;
            assert w_lights_L = "000" report "bad reset" severity failure;
            assert w_lights_R = "000" report "bad reset" severity failure;
-        
         w_reset <= '0';
         wait for k_clk_period*1;
         
-        -- left turn
+       -- turn on left turn signal
         w_left <= '1'; w_right <= '0';
+        -- check if first signal fires for left turn
         wait for k_clk_period;
            assert w_lights_L = "001" report "1st stage of left turn signal failed" severity failure;
            assert w_lights_R = "000" report "1st stage of right output from left turn signal failed" severity failure;
+        -- check if second signal fires for left turn
         wait for k_clk_period;
            assert w_lights_L = "011" report "2nd stage of left turn signal failed" severity failure;
            assert w_lights_R = "000" report "2nd stage of right output from left turn signal failed" severity failure;
+        -- check if third signal fires for left turn
         wait for k_clk_period;
            assert w_lights_L = "111" report "3rd stage of left turn signal failed" severity failure;
            assert w_lights_R = "000" report "3rd stage of right output from left turn signal failed" severity failure;
+        -- check if left turn lights reset after third signal fires
         wait for k_clk_period;
            assert w_lights_L = "000" report "final stage / reset of left turn signal failed" severity failure;
            assert w_lights_R = "000" report "final stage / reset of left turn signal failed" severity failure;            
        
-        -- right turn
+        -- turn on right turn signal
         w_left <= '0'; w_right <= '1';
+        -- check if first signal fires for right turn
         wait for k_clk_period;
            assert w_lights_L = "000" report "1st stage of left output from right turn signal failed" severity failure;
            assert w_lights_R = "001" report "1st stage of right turn signal failed" severity failure;
+        -- check if second signal fires for right turn
         wait for k_clk_period;
            assert w_lights_L = "000" report "2nd stage of left output from right turn signal failed" severity failure;
            assert w_lights_R = "011" report "2nd stage of right turn signal failed" severity failure;
+        -- check if third signal fires for right turn
         wait for k_clk_period;
            assert w_lights_L = "000" report "3rd stage of left output from right turn signal failed" severity failure;
            assert w_lights_R = "111" report "3rd stage of right turn signal failed" severity failure;
+        -- check if right turn lights reset after third signal fires
         wait for k_clk_period;
            assert w_lights_L = "000" report "final stage / reset of left turn signal failed" severity failure;
            assert w_lights_R = "000" report "final stage / reset of left turn signal failed" severity failure;     
        
-       -- hazards 
+       -- turn on hazards 
        w_left <= '1'; w_right <= '1';
+       -- check if all lights turn on for hazards
        wait for k_clk_period;
            assert w_lights_L = "111" report "left lights failed to light up during hazards stage" severity failure;
            assert w_lights_R = "111" report "right lights failed to light up during hazards stage" severity failure;
+       -- check if all lights turn off for second stage of hazards
        wait for k_clk_period;
            assert w_lights_L = "000" report "left lights failed to turn off during hazards stage" severity failure;
            assert w_lights_R = "000" report "right lights failed to turn off during hazards stage" severity failure;
